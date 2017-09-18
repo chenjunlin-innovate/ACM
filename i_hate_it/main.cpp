@@ -1,6 +1,6 @@
 #include<iostream>
 #include<string>
-
+#include<algorithm>
 #pragma warning(disable:4996);
 
 using namespace std;
@@ -37,15 +37,17 @@ int Query(int left, int right, int L, int R, int rt) {
 		return b[rt];
 
 	int m = (left + right) >> 1;
-
-	if (L <= m)return Query(left, m, L, R, rt << 1);
-	if (R > m)return Query(m + 1, right, L, R, rt << 1 | 1);
+	int la(0), ra(0);
+	if (L <= m)la= Query(left, m, L, R, rt << 1);
+	if (R > m)ra= Query(m + 1, right, L, R, rt << 1 | 1);
+	
+	return max(la, ra);
 }
 
 int main() {
 	int x, y;
 	int m, n;
-	while(scanf("%d%d",&x,&y)) {
+	while(scanf("%d%d",&x,&y)!=EOF) {
 		Build(1, x, 1);
 		char l;
 		for (int i(0); i < y;i++) {
