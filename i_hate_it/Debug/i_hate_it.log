@@ -1,0 +1,5 @@
+﻿  main.cpp
+d:\github\acm\i_hate_it\main.cpp(4): warning C4081: 应输入“newline”；找到“;”
+d:\github\acm\i_hate_it\main.cpp(43): warning C4715: “Query”: 不是所有的控件路径都返回值
+  i_hate_it.vcxproj -> D:\github\ACM\i_hate_it\Debug\i_hate_it.exe
+  i_hate_it.vcxproj -> D:\github\ACM\i_hate_it\Debug\i_hate_it.pdb (Partial PDB)
