@@ -2,6 +2,8 @@
 #include<vector>
 #include<string>
 
+#pragma warning(disable:4996)
+
 using namespace std;
 
 int a[60000];
@@ -9,7 +11,7 @@ int b[300000];
 
 void Build(int p, int q, int rt) {
 	if (p == q) {
-		b[rt] = a[p];
+		scanf("%d", &b[rt]);
 		return;
 	}
 	int m = (p + q) >> 1;
@@ -47,29 +49,27 @@ int main(){
 	int n;	cin >> n;
 	for (int i(1); i <= n; i++) {
 		int x;	cin >> x;
-		for (int i(1); i <= x; i++)
-			cin >> a[i];
 
 		Build(1, x, 1);
 
 		cout << "Case " << i << ':' << endl;
 
-		string l;
-		while (cin >> l) {
-			if (l == "End")break;
-			else if (l == "Query") {
+		char l[20];
+		while (scanf("%s", l)!=EOF) {
+			if (l[0] == 'E')break;
+			else if (l[0] == 'Q') {
 				int m, n;
-				cin >> m >> n;
+				scanf("%d%d", &m, &n);
 				cout << Query(1, x, m, n, 1) << endl;
 			}
-			else if (l == "Sub") {
+			else if (l[0] == 'S') {
 				int m, n;
-				cin >> m >> n;
+				scanf("%d%d", &m, &n);
 				Updata(1, x, m, -n, 1);
 			}
-			else if (l == "Add") {
+			else if (l[0] == 'A') {
 				int m, n;
-				cin >> m >> n;
+				scanf("%d%d", &m, &n);
 				Updata(1, x, m, n, 1);
 			}
 		}
