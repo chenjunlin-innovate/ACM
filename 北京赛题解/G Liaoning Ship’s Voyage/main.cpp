@@ -1,7 +1,7 @@
 #include<algorithm>
 #include<iostream>
 #include<vector>
-//写了一个错误的bfs，，然后超时了
+//把bfs改正常后 wa了。。
 using namespace std;
 
 struct Point {
@@ -104,10 +104,12 @@ int q[]{ 0,1,0,-1,1,0,1,-1,1,1,1,-1,-1,1,-1,-1 };
 
 Point p1, p2, p3;
 
-bool bfs(int k,vector<vector<bool>> map,int x,int y) {
-	map[x][y] = 0;
+vector<vector<bool>> map;
+
+bool bfs(int k,int x,int y) {
 	if (x == map.size() - 1, y == map.size() - 1)return 1;
 	if (k <= 1)return 0;
+	map[x][y] = 0;
 	bool kkk = 0;
 	for (int i(0); i < 16; i += 2) {
 		int Nx = x + q[i];
@@ -115,17 +117,19 @@ bool bfs(int k,vector<vector<bool>> map,int x,int y) {
 
 		if (Nx < map.size() && Ny < map.size() && Nx >= 0 && Ny >= 0) {
 			if (map[Nx][Ny] == 1 && !(intersect(p1, p2, Point(x, y), Point(Nx, Ny)) || intersect(p1, p2, Point(x, y), Point(Nx, Ny)) || intersect(p1, p2, Point(x, y), Point(Nx, Ny))))
-				kkk |= bfs(k - 1, map, Nx, Ny);
+				kkk |= bfs(k - 1, Nx, Ny);
 		}
 	}
+	map[x][y] = 1;
 	return kkk;
 }
 
 int main() {
 	int n;
 	while (cin >> n) {
+		map.resize(n);
+		for (int i(0); i < n; i++)map[i].resize(n, 0);
 		char q;
-		vector<vector<bool>> map(n, vector<bool>(n,0));
 		double x1, y1, x2, y2, x3, y3;
 		cin >> x1 >> y1 >> x2 >> y2 >> x3 >> y3;
 		p1.x = y1;p2.x = y2; p3.x = y3;
@@ -146,13 +150,13 @@ int main() {
 		bool o = 0;
 		int max = n*n / 2;
 		for (int i(0); i < max; i++) {
-			if (bfs(i, map, 0, 0)) {
+			if (bfs(i, 0, 0)) {
 				o = 1;
 				cout << i << endl;
 				break;
 			}
 		}
 		if (!o)cout << -1 << endl;
-
+		map.clear();
 	}
 }
