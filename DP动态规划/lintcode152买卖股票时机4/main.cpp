@@ -13,6 +13,14 @@ public:
 	int maxProfit(int k,vector<int> &prices) {
 		if (prices.size() == 0)
 			return 0;
+		if (k >= prices.size()) {
+			int sum(0);
+			for (int i(1); i < prices.size(); i++) {
+				if (prices[i - 1] < prices[i])
+					sum += prices[i] - prices[i - 1];
+			}
+			return sum;
+		}
 		vector<vector<int>>Buy(k, vector<int>(prices.size(),-prices[0]));
 		vector<vector<int>>Sell(k, vector<int>(prices.size(), 0));
 
