@@ -1,22 +1,13 @@
 
-*.obj
-*.exe
-*.ilk
-*.ipch
-*.tlog
-*.pdb
-
-*.idb
-*.db
-*.log
-线段树+树状数组/B - i_hate_it/.vs/i_hate_it/v15/.suo
-*.filters
-*.vcxproj
-*.opendb
-
 *.suo
 #过滤数据库文件、sln解决方案文件、配置文件
 *.mdb
 *.ldb
 *.sln
 *.config
+
+
+#过滤文件夹Debug,Release,obj
+Debug/
+Release/
+obj/
