@@ -1,43 +1,47 @@
 #include<iostream>
-#include<vector>
+#include<algorithm>
+
 using namespace std;
-vector<vector<int> >all;
-vector<bool>check(8, 0);
-int k,n;
-int sum;
-void dfs(int i,int x) {
-	if (x == k) {
-		sum++;
-		return;
+
+int n, k;
+int w[100001], v[100001];
+
+double y[100001];
+
+bool C(double x) {
+	for (int i(0); i < n; i++) {
+		y[i] = v[i] - x * w[i];
 	}
-	if (i >= n)
-		return;
-	for (int j(0); j < all[i].size(); j++) {
-		if (!check[all[i][j]]) {
-			check[all[i][j]] = 1;
-			dfs(i + 1, x + 1);
-			check[all[i][j]] = 0;
-		}
+	sort(y, y + n);
+
+	double sum(0);
+	for (int i(0); i < k; i++) {
+		sum += y[n - i - 1];
 	}
-	dfs(i + 1, x);
+
+	return sum >= 0;
+}
+
+void solve() {
+	double lb = 0, ub = 1000000000;
+	for (int i(0); i < 100; i++) {
+		double mid = (lb + ub) / 2;
+		if (C(mid))lb = mid;
+		else ub = mid;
+	}
+
+	printf("%.2f\n", ub);
 }
 
 int main() {
-	while (cin>>n>>k)
-	{
-		if (n == -1 && k == -1)
-			break;
-		all.clear();
-		sum = 0;
-		all.resize(n);
-		char qq;
+	int T;
+	cin >> T;
+	while(T--) {
+		cin >> n >> k;
 		for (int i(0); i < n; i++) {
-			for (int j(0); j < n; j++) {
-				cin >> qq;
-				if (qq == '#')all[i].push_back(j);
-			}
+			cin >> w[i] >> v[i];
 		}
-		dfs(0, 0);
-		cout << sum << endl;
+		solve();
 	}
+	return 0;
 }
