@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <stdio.h>
 #include <algorithm>
 using namespace std;
 typedef long long LL;

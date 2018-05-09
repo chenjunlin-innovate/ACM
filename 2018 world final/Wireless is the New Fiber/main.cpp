@@ -3,52 +3,77 @@
 #include <map>
 #include <algorithm>
 using namespace std;
-typedef long long LL;
-typedef pair<LL, LL> pii;
-const int maxn = 2e6 + 10;
-int u[maxn], v[maxn];
-LL st[maxn], ed[maxn];
-double p[maxn];
-vector<pii> vec;
-map<LL, double> f[maxn];
-map<LL, double> ::iterator it;
-vector<int> G[maxn];
+const int maxn = 1e4 + 10;
+typedef pair<int, int> pii;
+int deg[maxn];			//´æ´¢Á¬½ÓÊý
+bool cmp(int i, int j)
+{
+	return deg[i] < deg[j];
+}
+vector<pii> G;
 
 int main() {
-	int m, n;
-	LL k;
-	scanf("%d %d %lld", &m, &n, &k);
-	for (int i = 1; i <= m; ++i) {
-		scanf("%d %d %lld %lld %lf", u + i, v + i, st + i, ed + i, p + i);
-		if (u[i] == 1 || ed[i] > k) { m--; i--; continue; }
-		vec.push_back(pii(st[i], u[i]));
-		vec.push_back(pii(ed[i], v[i]));
+	int n, m, cnt = 0;
+	cin >> n >> m;
+	vector<int> rank(n);
+	vector<int> onelink;
+	for (int i = 0; i < n; ++i)
+		rank[i] = i;
+	for (int i = 0; i < m; ++i) {
+		int a, b;
+		cin >> a >> b;
+		deg[a]++, deg[b]++;
 	}
-	vec.push_back(pii(k + 1, 1));
-	sort(vec.begin(), vec.end());
-	vec.erase(unique(vec.begin(), vec.end()), vec.end());
-	for (int i = 1; i <= m; ++i) {
-		int x = lower_bound(vec.begin(), vec.end(), pii(st[i], u[i])) - vec.begin();
-		G[x].push_back(i);
-	}
-	for (int i = vec.size() - 1; i >= 0; i--) {
-		int x = vec[i].second;
-		LL now = vec[i].first;
-		double pre = x == 1 ? 1 : 0;
-		if (x != 1) {
-			it = f[x].upper_bound(now);
-			if (it != f[x].end()) pre = (*it).second;
+	sort(rank.begin(), rank.end(), cmp);
+
+
+	int ed = n;
+	for (int i = 0; i < ed; ++i) {
+		int x = rank[i];
+		if (deg[x] == 1) {
+			onelink.push_back(x);
+			cnt++;
 		}
-		double M = pre;
-		for (int j = 0; j < G[i].size(); ++j) {
-			int y = G[i][j];
-			it = f[v[y]].upper_bound(ed[y]);
-			if (it == f[v[y]].end()) continue;
-			M = max(M, p[y] * (*it).second + (1 - p[y]) * pre);
+		else if (onelink.size() >= deg[x] - 1) {
+			for (int j = 0; j < deg[x] - 1; ++j) {
+				int y = onelink[onelink.size() - 1];
+				G.push_back(pii(x, y));
+				onelink.pop_back();
+			}
+			onelink.push_back(x);
+			cnt++;
 		}
-		f[x][now] = M;
+		else if (onelink.size() + ed - i - 1 >= deg[x] - 1) {
+			for (int j = 0; j < onelink.size(); ++j) {
+				int y = onelink[j];
+				G.push_back(pii(x, y));
+			}
+			for (int j = 0; j < deg[x] - 1 - onelink.size(); ++j) {
+				G.push_back(pii(x, rank[--ed]));
+			}
+			onelink.clear();
+			onelink.push_back(x);
+			cnt++;
+		}
+		else {
+			for (int j = 0; j < onelink.size(); ++j)
+				G.push_back(pii(x, onelink[j]));
+			for (int j = i + 1; j < ed; ++j)
+				G.push_back(pii(x, rank[j]));
+			onelink.clear();
+			break;
+		}
 	}
-	it = f[0].begin();
-	printf("%.10f\n", (*it).second);
+
+	if (onelink.size() > 0) {
+		if (onelink.size() != 2) cnt--;
+		for (int i = 1; i < onelink.size(); ++i)
+			G.push_back(pii(onelink[0], onelink[i]));
+	}
+
+	cout << n - cnt << endl;
+	cout << n << " " << n - 1 << endl;
+	for (int i = 0; i < G.size(); ++i)
+		cout << G[i].first << " " << G[i].second << endl;
 	return 0;
 }

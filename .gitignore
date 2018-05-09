@@ -12,3 +12,6 @@ Debug/
 Release/
 obj/
 .vs/
+*.vcxproj
+*.filters
+*.user
