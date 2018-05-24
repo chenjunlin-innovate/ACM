@@ -3,26 +3,35 @@
 #include<algorithm>
 #include<string>
 
+int dp[5010][5010];
+
 using namespace std;
 
 int main() {
 	int n;
-	while (cin>>n)
+	while (cin >> n)
 	{
-		vector<long long> num(n+5, 0);
-		cin >> num[1];
-		for (int i(2); i <= n; i++) {
-			long long a;
-			cin >> a;
-			num[i] = num[i - 1] ^ a;
+		for (int i(0); i < n; i++) {
+			cin >> dp[0][i];
 		}
-		int m;
-		cin >> m;
-		for (int i(0); i < m; i++) {
-			int a, b;
-			cin >> a >> b;
-			cout << (num[a-1] ^ num[b]) << endl;
+		for (int i(1); i < n; i++) {
+			for (int j(0); j <= n - i; j++) {
+				dp[i][j] = dp[i-1][j] ^ dp[i-1][j + 1];
+			}
 		}
 
+		for (int i(1); i < n; i++) {
+			for (int j(0); j < n - i; j++) {
+				dp[i][j] = max({dp[i][j], dp[i - 1][j], dp[i - 1][j + 1] });
+			}
+		}
+
+		int q;
+		cin >> q;
+		for (int i(0); i < q; i++) {
+			int l, r;
+			cin >> l>> r;
+			cout << dp[r - l][l - 1] << endl;
+		}
 	}
 }
