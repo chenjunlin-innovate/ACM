@@ -39,7 +39,7 @@ void init() {
 	Charlist['Y'] = 'Y';Charlist['Z'] = '5';Charlist['1'] = '1';Charlist['2'] = 'S';Charlist['3'] = 'E';Charlist['4'] = ' ';
 	Charlist['5'] = 'Z';Charlist['6'] = ' ';Charlist['7'] = ' ';Charlist['8'] = '8';Charlist['9'] = ' ';
 }
-
+//建立对应表还可以使用数组  char x =['A',' '......] 然后 对应时分数字和字母 利用ascii码  x[char-'A'] 去获取该字母对应的字母 
 int main() {
 	init();
 	string ans1 = " -- is not a palindrome.\n";
