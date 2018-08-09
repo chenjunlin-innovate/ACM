@@ -13,7 +13,7 @@ long long quickmod(unsigned long long a, unsigned long long b, unsigned long lon
 			ans = (ans*a) % m;//乘到结果上，这里a是a^(2^i)%m
 			b--;//把该为变0
 		}
-		b /= 2;
+		b >> 1;
 		a = a * a%m;
 	}
 	return ans;
